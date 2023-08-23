@@ -47,6 +47,8 @@
     - {src_path: "vector.default.j2", dest_path: "/etc/default/vector", owner: "root", group: "root", mode: '0644'}
     - {src_path: "vector.service.j2", dest_path: "/lib/systemd/system/vector.service", owner: "root", group: "root", mode: '0644'}
     - {src_path: "vector.toml.j2", dest_path: "/etc/vector/vector.toml", owner: "{{ vector_user }}", group: "{{ vector_user }}", mode: '0644'}
+  notify:
+    - "HND_RESTART_VECTOR_SERVICE"
 
 - name: "Copy a vector bin file"
   ansible.builtin.copy:
@@ -60,7 +62,7 @@
 - name: "Restart service vector and also exec daemon-reload to pick up config changes"
   ansible.builtin.systemd:
     name: "vector.service"
-    state: "restarted"
+    state: "started"
     enabled: true
     daemon_reload: true
 

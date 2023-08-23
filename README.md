@@ -12,6 +12,11 @@ Role Variables
 | tmp_directory_path     | string | /tmp/distrib          | Задает путь для временной директории в которую загружаются дистрибутивы |
 | vector_version         | string | 0.31.0                | Позволяет задать требуемую к установки версию Vector                    |
 
+Handlers
+------------
+
+ - HND_RESTART_VECTOR_SERVICE - Перезапускает сервис vector в случаи изменения его конфигурации.
+
 Tags
 ------------
 
