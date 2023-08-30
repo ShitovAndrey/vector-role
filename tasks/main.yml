@@ -59,12 +59,13 @@
     mode: '0755'
     remote_src: true
 
-- name: "Restart service vector and also exec daemon-reload to pick up config changes"
+- name: "Start service vector and enabled"
   ansible.builtin.systemd:
     name: "vector.service"
     state: "started"
     enabled: true
     daemon_reload: true
+  
 
 - name: "Remove tmp directory"
   ansible.builtin.file:

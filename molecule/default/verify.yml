@@ -1,0 +1,37 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+
+# =============== Validate config ===============
+  - name: "Call validate vector config command"
+    ansible.builtin.shell:
+      cmd: "vector validate"
+    no_log: true
+    register: reg_vector_validate_result
+    changed_when: false
+    failed_when: false
+    
+  - name: "Check vector validate config command status"
+    assert:
+      quiet: true
+      fail_msg: "The vector config file is not valid"
+      success_msg: "Vector validate config file is OK"
+      that:
+        - reg_vector_validate_result.rc == 0
+
+# =============== Validate service status ===============
+  - name: "Get all services info"
+    ansible.builtin.service_facts:
+  
+  - name: "Check vector service status"
+    assert:
+      quiet: true
+      fail_msg: "The vector service is not started or enabled"
+      success_msg: "The vector service is RUNNING and ENABLED"
+      that:
+        - ansible_facts.services['vector.service'].state == "running"
+        - ansible_facts.services['vector.service'].status == "enabled"
